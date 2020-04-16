@@ -1,0 +1,5 @@
+{
+    "mongoURI": "mongodb+srv://ben_227:ben_227@golf-tracker-database-paszu.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtSecret": "secret"
+  }
+  
