@@ -1,0 +1,9 @@
+export const ADD_GAME = 'ADD_GAME';
+export const DELETE_GAME = 'DELETE_GAME';
+export const SET_CURRENT = 'SET_CURRENT';
+export const CLEAR_CURRENT = 'CLEAR_CURRENT';
+export const UPDATE_GAME = 'UPDATE_GAME';
+export const FILTER_GAMES = 'FILTER_GAMES';
+export const CLEAR_FILTER = 'CLEAR_FILTER';
+export const SET_ALERT = 'SET_ALERT';
+export const REMOVE_ALERT = 'REMOVE_ALERT';
