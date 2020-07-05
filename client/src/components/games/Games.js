@@ -1,4 +1,9 @@
 import React, { Fragment, useContext } from 'react';
+import {
+  CCSTransition,
+  TransitionGroup,
+  CSSTransition,
+} from 'react-transition-group';
 import GameItem from './GameItem';
 import GameContext from '../../context/game/gameContext';
 
@@ -13,9 +18,13 @@ const Games = () => {
 
   return (
     <Fragment>
-      {(filtered || games).map((game) => (
-        <GameItem key={game.id} game={game} />
-      ))}
+      <TransitionGroup>
+        {(filtered || games).map((game) => (
+          <CSSTransition key={game.id} timeout={500} classNames="item">
+            <GameItem game={game} />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </Fragment>
   );
 };

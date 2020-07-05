@@ -96,7 +96,7 @@ const GameState = (props) => {
       value={{
         games: state.games,
         current: state.current,
-        fliltered: state.filtered,
+        filtered: state.filtered,
         addGame,
         deleteGame,
         setCurrent,
