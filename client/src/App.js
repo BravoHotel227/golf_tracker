@@ -5,9 +5,12 @@ import Home from './components/pages/Home';
 import About from './components/pages/About';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Courses from './components/courses/Courses';
 import Alerts from './components/layout/Alerts';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 import GameState from './context/game/GameState';
+import CourseState from './context/course/CourseState';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
 import setAuthToken from './utils/setAuthToken';
@@ -21,22 +24,25 @@ const App = () => {
   return (
     <AuthState>
       <GameState>
-        <AlertState>
-          <Router>
-            <Fragment>
-              <Navbar />
-              <div className="container">
-                <Alerts />
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route exact path="/about" component={About} />
-                  <Route exact path="/register" component={Register} />
-                  <Route exact path="/login" component={Login} />
-                </Switch>
-              </div>
-            </Fragment>
-          </Router>
-        </AlertState>
+        <CourseState>
+          <AlertState>
+            <Router>
+              <Fragment>
+                <Navbar />
+                <div className="container">
+                  <Alerts />
+                  <Switch>
+                    <PrivateRoute exact path="/" component={Home} />
+                    <PrivateRoute exact path="/courses" component={Courses} />
+                    <Route exact path="/about" component={About} />
+                    <Route exact path="/register" component={Register} />
+                    <Route exact path="/login" component={Login} />
+                  </Switch>
+                </div>
+              </Fragment>
+            </Router>
+          </AlertState>
+        </CourseState>
       </GameState>
     </AuthState>
   );

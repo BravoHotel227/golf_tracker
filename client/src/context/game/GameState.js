@@ -1,54 +1,47 @@
 import React, { useReducer } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 import GameContext from './gameContext';
 import gameReducer from './gameReducer';
 import {
   ADD_GAME,
+  GAME_ERROR,
   DELETE_GAME,
   SET_CURRENT,
   CLEAR_CURRENT,
   UPDATE_GAME,
   FILTER_GAMES,
   CLEAR_FILTER,
+  GET_GAMES,
+  CLEAR_GAMES,
 } from '../types';
 
 const GameState = (props) => {
   const initialState = {
-    games: [
-      {
-        stroke: [4, 4, 6, 6, 6, 8, 4, 6, 7],
-        id: '1',
-        user: 'Ben Harrison',
-        course: 'Canterbury Bankstown',
-        par: 33,
-        date: '27-04-2020',
-      },
-      {
-        stroke: [4, 6, 3, 7, 6, 7, 5, 5, 5],
-        id: '2',
-        user: 'Ben Harrison',
-        course: 'Canterbury Bankstown',
-        par: 33,
-        date: '20-04-2020',
-      },
-      {
-        stroke: [4, 4, 3, 6, 7, 7, 4, 6, 6, 5, 4, 4, 5, 5, 5, 5, 5, 6],
-        id: '3',
-        user: 'Ben Harrison',
-        course: 'Canterbury Bankstown',
-        par: 66,
-        date: '16-04-2020',
-      },
-    ],
+    games: null,
     current: null,
     filtered: null,
+    error: null,
   };
 
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
+  // Get Games
+  const getGames = async () => {
+    try {
+      const res = await axios.get('/api/games');
+      dispatch({ type: GET_GAMES, payload: res.data });
+    } catch (err) {
+      dispatch({ type: GAME_ERROR, payload: err.response.msg });
+    }
+  };
+
   // Add Game
-  const addGame = (game) => {
-    game.id = uuidv4();
+  const addGame = async (game) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
     if (!Array.isArray(game.stroke)) {
       var str = game.stroke.split(' ');
       game.stroke = str.map((st) => parseInt(st));
@@ -59,12 +52,25 @@ const GameState = (props) => {
     var yyyy = today.getFullYear();
     today = dd + '-' + mm + '-' + yyyy;
     game.date = today;
-    game.par = 33;
-    dispatch({ type: ADD_GAME, payload: game });
+    try {
+      const res = await axios.post('/api/games', game, config);
+      dispatch({ type: ADD_GAME, payload: res.data });
+    } catch (err) {
+      dispatch({ type: GAME_ERROR, payload: err.response.msg });
+    }
   };
   // Delete Game
-  const deleteGame = (id) => {
-    dispatch({ type: DELETE_GAME, payload: id });
+  const deleteGame = async (id) => {
+    try {
+      await axios.delete(`/api/games/${id}`);
+      dispatch({ type: DELETE_GAME, payload: id });
+    } catch (err) {
+      dispatch({ type: GAME_ERROR, payload: err.response.msg });
+    }
+  };
+  // Clear Games
+  const clearGames = () => {
+    dispatch({ type: CLEAR_GAMES });
   };
   // Set Current Game
   const setCurrent = (game) => {
@@ -75,13 +81,22 @@ const GameState = (props) => {
     dispatch({ type: CLEAR_CURRENT });
   };
   // Update Game
-  const updateGame = (game) => {
-    console.log(game);
+  const updateGame = async (game) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
     if (!Array.isArray(game.stroke)) {
       var str = game.stroke.split(',');
       game.stroke = str.map((st) => parseInt(st));
     }
-    dispatch({ type: UPDATE_GAME, payload: game });
+    try {
+      const res = await axios.put(`/api/games/${game._id}`, game, config);
+      dispatch({ type: UPDATE_GAME, payload: res.data });
+    } catch (err) {
+      dispatch({ type: GAME_ERROR, payload: err.response.msg });
+    }
   };
   // Filter Games
   const filterGames = (text) => {
@@ -91,14 +106,18 @@ const GameState = (props) => {
   const clearFilter = () => {
     dispatch({ type: CLEAR_FILTER });
   };
+
   return (
     <GameContext.Provider
       value={{
         games: state.games,
         current: state.current,
         filtered: state.filtered,
+        error: state.error,
+        getGames,
         addGame,
         deleteGame,
+        clearGames,
         setCurrent,
         clearCurrent,
         updateGame,

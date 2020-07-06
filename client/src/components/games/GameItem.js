@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import GameContext from '../../context/game/gameContext';
-
+import AuthContext from '../../context/auth/authContext';
 const GameItem = ({ game }) => {
   const gameContext = useContext(GameContext);
+  const authContext = useContext(AuthContext);
   const { deleteGame, setCurrent, clearCurrent } = gameContext;
 
-  const { id, user, stroke, course, date, par } = game;
-
+  const { _id, stroke, course, date } = game;
+  const { user } = authContext;
   const onDelete = () => {
-    deleteGame(id);
+    deleteGame(_id);
     clearCurrent();
   };
 
@@ -19,7 +20,7 @@ const GameItem = ({ game }) => {
       <ul className="list">
         <li>
           <strong>Player: </strong>
-          {user}
+          {user.name}
         </li>
         <li>
           <strong>Course: </strong>
@@ -32,10 +33,6 @@ const GameItem = ({ game }) => {
         <li>
           <strong>Total: </strong>
           {stroke.reduce((a, b) => a + b, 0)}
-        </li>
-        <li>
-          <strong>Par: </strong>
-          {par}
         </li>
       </ul>
       <p>

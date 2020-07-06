@@ -1,30 +1,36 @@
-import React, { Fragment, useContext } from 'react';
-import {
-  CCSTransition,
-  TransitionGroup,
-  CSSTransition,
-} from 'react-transition-group';
+import React, { Fragment, useContext, useEffect } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import GameItem from './GameItem';
+import Spinner from '../layout/Spinner';
 import GameContext from '../../context/game/gameContext';
 
 const Games = () => {
   const gameContext = useContext(GameContext);
 
-  const { games, filtered } = gameContext;
+  const { games, filtered, getGames, loading } = gameContext;
 
-  if (games.length === 0) {
+  useEffect(() => {
+    getGames();
+    //eslint-disable-next-line
+  }, []);
+
+  if (games !== null && games.length === 0 && !loading) {
     return <h4>Please add a game</h4>;
   }
 
   return (
     <Fragment>
-      <TransitionGroup>
-        {(filtered || games).map((game) => (
-          <CSSTransition key={game.id} timeout={500} classNames="item">
-            <GameItem game={game} />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
+      {(games !== null) & !loading ? (
+        <TransitionGroup>
+          {(filtered || games).map((game) => (
+            <CSSTransition key={game._id} timeout={500} classNames="item">
+              <GameItem game={game} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      ) : (
+        <Spinner />
+      )}
     </Fragment>
   );
 };

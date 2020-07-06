@@ -1,20 +1,30 @@
 import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
+import GameContext from '../../context/game/gameContext';
+import CourseContext from '../../context/course/courseContext';
 
 const Navbar = ({ title, icon }) => {
   const authContext = useContext(AuthContext);
-
+  const gameContext = useContext(GameContext);
+  const { clearGames } = gameContext;
   const { isAuthenticated, logout, user } = authContext;
 
   const onLogout = () => {
     logout();
+    clearGames();
   };
 
   const authLinks = (
     <Fragment>
       <li>Hello {user && user.name}</li>
+      <li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <Link to="/courses">Courses</Link>
+      </li>
       <li>
         <a onClick={onLogout} href="#!">
           <i className="fas fa-sign-out-alt" />
