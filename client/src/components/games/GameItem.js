@@ -1,14 +1,24 @@
 import React, { useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import GameContext from '../../context/game/gameContext';
 import AuthContext from '../../context/auth/authContext';
 const GameItem = ({ game }) => {
   const gameContext = useContext(GameContext);
   const authContext = useContext(AuthContext);
+
   const { deleteGame, setCurrent, clearCurrent } = gameContext;
 
   const { _id, stroke, course, date } = game;
   const { user } = authContext;
+
+  const formDate = (date) => {
+    var dateStr = new Date(date);
+    return (
+      dateStr.getDate() + '/' + dateStr.getMonth() + '/' + dateStr.getFullYear()
+    );
+  };
+
   const onDelete = () => {
     deleteGame(_id);
     clearCurrent();
@@ -16,19 +26,46 @@ const GameItem = ({ game }) => {
 
   return (
     <div className="card bg-light">
-      <h3 className="text-primary text-left">{date}</h3>
+      <h3 className="text-primary text-left">{formDate(date)}</h3>
       <ul className="list">
-        <li>
-          <strong>Player: </strong>
-          {user.name}
-        </li>
         <li>
           <strong>Course: </strong>
           {course}
         </li>
         <li>
-          <strong>Strokes: </strong>
-          {stroke.map((str) => str + ' ')}
+          <table>
+            <thead>
+              <tr>
+                <td>Hole</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+                <td>11</td>
+                <td>12</td>
+                <td>13</td>
+                <td>14</td>
+                <td>15</td>
+                <td>16</td>
+                <td>17</td>
+                <td>18</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Strokes</td>
+                {stroke.map((str) => (
+                  <td key={uuidv4()}>{str}</td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
         </li>
         <li>
           <strong>Total: </strong>

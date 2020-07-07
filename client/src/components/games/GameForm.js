@@ -1,28 +1,30 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, createContext } from 'react';
 import GameContext from '../../context/game/gameContext';
-
+import CourseContext from '../../context/course/courseContext';
 const GameForm = () => {
   const gameContext = useContext(GameContext);
+  const courseContext = useContext(CourseContext);
+
   const { addGame, current, clearCurrent, updateGame } = gameContext;
+  const { courses, getCourses } = courseContext;
 
   useEffect(() => {
+    getCourses();
     if (current !== null) {
       setGame(current);
     } else {
       setGame({
-        user: '',
         course: '',
         stroke: [],
       });
     }
   }, [gameContext, current]);
   const [game, setGame] = useState({
-    user: '',
     course: '',
     stroke: [],
   });
 
-  const { user, course, stroke } = game;
+  const { course, stroke } = game;
 
   const onChange = (e) => setGame({ ...game, [e.target.name]: e.target.value });
 
@@ -43,20 +45,15 @@ const GameForm = () => {
   return (
     <form onSubmit={onSubmit}>
       <h2 className="text-primary">{current ? 'Edit Game' : 'Add Game'}</h2>
-      <input
-        type="text"
-        placeholder="User"
-        name="user"
-        value={user}
-        onChange={onChange}
-      />
-      <input
-        type="text"
-        placeholder="Course"
-        name="course"
-        value={course}
-        onChange={onChange}
-      />
+      <select placeholder="Select a course" name="course" onChange={onChange}>
+        <option value={course}>{course ? course : 'Select one...'}</option>
+        {courses &&
+          courses.map((crs) => (
+            <option key={crs._id} value={crs.name}>
+              {crs.name}
+            </option>
+          ))}
+      </select>
       <input
         type="text"
         placeholder="Strokes (Use spaces to seperate strokes)"

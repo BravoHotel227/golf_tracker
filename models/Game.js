@@ -6,7 +6,7 @@ const GameSchema = mongoose.Schema({
     ref: 'users',
   },
   course: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'course',
   },
   stroke: {

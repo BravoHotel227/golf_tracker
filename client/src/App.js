@@ -5,7 +5,7 @@ import Home from './components/pages/Home';
 import About from './components/pages/About';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import Courses from './components/courses/Courses';
+import Course from './components/pages/Course';
 import Alerts from './components/layout/Alerts';
 import PrivateRoute from './components/routing/PrivateRoute';
 
@@ -33,7 +33,7 @@ const App = () => {
                   <Alerts />
                   <Switch>
                     <PrivateRoute exact path="/" component={Home} />
-                    <PrivateRoute exact path="/courses" component={Courses} />
+                    <PrivateRoute exact path="/courses" component={Course} />
                     <Route exact path="/about" component={About} />
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/login" component={Login} />

@@ -1,9 +1,8 @@
 import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 import GameContext from '../../context/game/gameContext';
-import CourseContext from '../../context/course/courseContext';
 
 const Navbar = ({ title, icon }) => {
   const authContext = useContext(AuthContext);
@@ -20,10 +19,11 @@ const Navbar = ({ title, icon }) => {
     <Fragment>
       <li>Hello {user && user.name}</li>
       <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/courses">Courses</Link>
+        {window.location.pathname === '/' ? (
+          <Link to="/courses">Courses</Link>
+        ) : (
+          <Link to="/">Home</Link>
+        )}
       </li>
       <li>
         <a onClick={onLogout} href="#!">

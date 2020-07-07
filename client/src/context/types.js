@@ -22,3 +22,5 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const GET_COURSES = 'GET_COURSES';
 export const ADD_COURSE = ' ADD_COURSES';
 export const COURSE_ERROR = 'COURSE_ERROR';
+export const FILTER_COURSES = 'FILTER_COURSES';
+export const GET_COURSE = 'GET_COURSE';

@@ -1,34 +1,34 @@
 import React, { Fragment, useContext, useEffect } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Spinner from '../layout/Spinner';
 import CourseItem from './CourseItem';
-import CourseForm from './CourseForm';
 import CourseContext from '../../context/course/courseContext';
-import AuthContext from '../../context/auth/authContext';
 const Courses = () => {
-  const authContext = useContext(AuthContext);
+  const courseContext = useContext(CourseContext);
 
-  const { loadUser } = authContext;
+  const { courses, filtered, getCourses, loading } = courseContext;
 
   useEffect(() => {
-    loadUser();
+    getCourses();
     //eslint-disable-next-line
   }, []);
+
+  if (courses !== null && courses.length === 0 && !loading) {
+    return <h4>Please add a course</h4>;
+  }
   return (
-    //     <Fragment>
-    //     {(games !== null) & !loading ? (
-    //       <TransitionGroup>
-    //         {(filtered || games).map((game) => (
-    //           <CSSTransition key={game._id} timeout={500} classNames="item">
-    //             <GameItem game={game} />
-    //           </CSSTransition>
-    //         ))}
-    //       </TransitionGroup>
-    //     ) : (
-    //       <Spinner />
-    //     )}
-    //   </Fragment>
     <Fragment>
-      <h1>Test</h1>
+      {(courses !== null) & !loading ? (
+        <TransitionGroup>
+          {(filtered || courses).map((course) => (
+            <CSSTransition key={course._id} timeout={500} classNames="item">
+              <CourseItem course={course} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      ) : (
+        <Spinner />
+      )}
     </Fragment>
   );
 };
