@@ -22,6 +22,7 @@ const CourseFilter = () => {
   return (
     <form>
       <input
+        className="filter"
         ref={text}
         type="text"
         placeholder="Filter Courses..."

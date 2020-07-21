@@ -1,16 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, createElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import GameContext from '../../context/game/gameContext';
-import AuthContext from '../../context/auth/authContext';
 const GameItem = ({ game }) => {
   const gameContext = useContext(GameContext);
-  const authContext = useContext(AuthContext);
 
   const { deleteGame, setCurrent, clearCurrent } = gameContext;
 
   const { _id, stroke, course, date } = game;
-  const { user } = authContext;
 
   const formDate = (date) => {
     var dateStr = new Date(date);
@@ -22,6 +19,18 @@ const GameItem = ({ game }) => {
   const onDelete = () => {
     deleteGame(_id);
     clearCurrent();
+  };
+  const runTable = (stroke) => {
+    var strArr = [];
+    for (let i = 0; i < 18; i++) {
+      if (stroke[i] !== undefined) {
+        strArr.push(stroke[i]);
+      } else if (stroke[i] === undefined || !stroke[i].isInteger()) {
+        strArr.push('');
+      }
+    }
+    console.log(strArr);
+    return strArr;
   };
 
   return (
@@ -60,9 +69,12 @@ const GameItem = ({ game }) => {
             <tbody>
               <tr>
                 <td>Strokes</td>
-                {stroke.map((str) => (
+                {runTable(stroke).map((str) => (
                   <td key={uuidv4()}>{str}</td>
                 ))}
+                {/* {stroke.map((str) =>
+                  str === null ? <td>-</td> : <td key={uuidv4()}>{str}</td>
+                )} */}
               </tr>
             </tbody>
           </table>

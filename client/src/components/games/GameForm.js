@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, createContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import GameContext from '../../context/game/gameContext';
 import CourseContext from '../../context/course/courseContext';
 const GameForm = () => {
@@ -18,6 +18,7 @@ const GameForm = () => {
         stroke: [],
       });
     }
+    // eslint-disable-next-line
   }, [gameContext, current]);
   const [game, setGame] = useState({
     course: '',
@@ -43,8 +44,9 @@ const GameForm = () => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form className="form" onSubmit={onSubmit}>
       <h2 className="text-primary">{current ? 'Edit Game' : 'Add Game'}</h2>
+      <label htmlFor="course">Select a course</label>
       <select placeholder="Select a course" name="course" onChange={onChange}>
         <option value={course}>{course ? course : 'Select one...'}</option>
         {courses &&
@@ -54,6 +56,10 @@ const GameForm = () => {
             </option>
           ))}
       </select>
+      <label htmlFor="stroke">
+        Enter strokes (Use spaces to seperate strokes and a - to show unplayed
+        holes)
+      </label>
       <input
         type="text"
         placeholder="Strokes (Use spaces to seperate strokes)"

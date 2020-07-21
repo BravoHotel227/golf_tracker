@@ -2,9 +2,12 @@ import {
   GET_COURSES,
   GET_COURSE,
   ADD_COURSE,
+  DELETE_COURSE,
   COURSE_ERROR,
   FILTER_COURSES,
   CLEAR_FILTER,
+  CLEAR_CURRENT,
+  SET_CURRENT,
 } from '../types';
 
 export default (state, action) => {
@@ -26,6 +29,24 @@ export default (state, action) => {
         ...state,
         courses: [action.payload, ...state.courses],
         loading: false,
+      };
+    case DELETE_COURSE:
+      return {
+        ...state,
+        courses: state.courses.filter(
+          (course) => course._id !== action.payload
+        ),
+        loading: false,
+      };
+    case CLEAR_CURRENT:
+      return {
+        ...state,
+        current: null,
+      };
+    case SET_CURRENT:
+      return {
+        ...state,
+        current: action.payload,
       };
     case FILTER_COURSES:
       return {

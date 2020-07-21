@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 
+import CourseContext from '../../context/course/courseContext';
+
 const CourseItem = ({ course }) => {
-  const { name, holePar, holeMeters, par } = course;
+  const courseContext = useContext(CourseContext);
+  const { deleteCourse, setCurrent, clearCurrent } = courseContext;
+
+  const onDelete = () => {
+    deleteCourse(_id);
+    clearCurrent();
+  };
+
+  const { _id, name, holePar, holeMeters, par } = course;
   return (
     <div className="card bg-light">
       <h3 className="text-primary text-left">Course</h3>
@@ -58,17 +68,17 @@ const CourseItem = ({ course }) => {
           </table>
         </li>
       </ul>
-      {/* <p>
+      <p>
         <button
           className="btn btn-dark btn-sm"
-          //   onClick={() => setCurrent(game)}
+          onClick={() => setCurrent(course)}
         >
           Edit
         </button>
-        <button className="btn btn-danger btn-sm" onClick={onClick}>
+        <button className="btn btn-danger btn-sm" onClick={onDelete}>
           Delete
         </button>
-      </p> */}
+      </p>
     </div>
   );
 };

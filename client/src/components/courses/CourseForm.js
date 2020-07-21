@@ -31,7 +31,7 @@ const CourseForm = () => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form className="form" onSubmit={onSubmit}>
       <h2 className="text-primary">Add Course</h2>
       <input
         type="text"

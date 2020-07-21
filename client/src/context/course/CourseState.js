@@ -5,10 +5,13 @@ import courseReducer from './courseReducer';
 import {
   GET_COURSES,
   ADD_COURSE,
+  DELETE_COURSE,
   COURSE_ERROR,
   CLEAR_FILTER,
   FILTER_COURSES,
   GET_COURSE,
+  SET_CURRENT,
+  CLEAR_CURRENT,
 } from '../types';
 
 const CourseState = (props) => {
@@ -69,12 +72,28 @@ const CourseState = (props) => {
     }
   };
 
+  const deleteCourse = async (id) => {
+    try {
+      await axios.delete(`/api/courses/${id}`);
+      dispatch({ type: DELETE_COURSE, payload: id });
+    } catch (err) {
+      dispatch({ type: COURSE_ERROR, payload: err.response.msg });
+    }
+  };
+
   const filterCourses = (text) => {
     dispatch({ type: FILTER_COURSES, payload: text });
   };
 
   const clearFilter = () => {
     dispatch({ type: CLEAR_FILTER });
+  };
+
+  const clearCurrent = () => {
+    dispatch({ type: CLEAR_CURRENT });
+  };
+  const setCurrent = (course) => {
+    dispatch({ type: SET_CURRENT, payload: course });
   };
 
   return (
@@ -87,8 +106,11 @@ const CourseState = (props) => {
         getCourses,
         getCourse,
         addCourse,
+        deleteCourse,
         filterCourses,
         clearFilter,
+        clearCurrent,
+        setCurrent,
       }}
     >
       {props.children}

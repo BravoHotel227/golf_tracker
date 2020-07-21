@@ -3,22 +3,27 @@ import Games from '../games/Games';
 import GameForm from '../games/GameForm';
 import GameFilter from '../games/GameFilter';
 import AuthContext from '../../context/auth/authContext';
-
-const Home = () => {
+const Game = () => {
   const authContext = useContext(AuthContext);
 
   const { loadUser } = authContext;
 
   useEffect(() => {
     loadUser();
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   return (
     <div className="grid-2">
-      <h1>Home Page</h1>
+      <div>
+        <GameForm />
+      </div>
+      <div>
+        <GameFilter />
+        <Games />
+      </div>
     </div>
   );
 };
 
-export default Home;
+export default Game;

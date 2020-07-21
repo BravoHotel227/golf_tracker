@@ -42,7 +42,7 @@ router.post(
     try {
       const newGame = new Game({
         user: req.user.id,
-        course: courseId[0]._id,
+        course,
         stroke,
       });
 
